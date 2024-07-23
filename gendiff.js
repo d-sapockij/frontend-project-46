@@ -8,19 +8,15 @@ import parse from './parser.js';
 
 const program = new Command();
 
-const getUnique = (arr) => {
-  return arr
-    .filter((el, index) => index === arr.indexOf(el))
-    .sort();
-  };
+const getUnique = (arr) => arr
+  .filter((el, index) => index === arr.indexOf(el))
+  .sort();
 
 const gendiff = (obj1, obj2) => {
   const diffObj = { };
-  
   const keys = getUnique([...Object.keys(obj1), ...Object.keys(obj2)]);
 
-
-  for (const key of keys) {
+  keys.forEach((key) => {
     if (!Object.hasOwn(obj1, key)) {
       // added;
       diffObj[`+ ${key}`] = obj2[key];
@@ -35,16 +31,14 @@ const gendiff = (obj1, obj2) => {
       // unchanged
       diffObj[`  ${key}`] = obj1[key];
     }
-  }
+  });
+
   const result = JSON
-    .stringify(diffObj, null, " ")
-    .replaceAll('"', '')
+    .stringify(diffObj, null, ' ')
+    .replaceAll('"', '');
 
-  console.log(obj1, obj2)
   return result;
-
-  
-}
+};
 
 program
   .name('gendiff')
@@ -61,9 +55,8 @@ program
     const obj2 = parse(data2);
 
     const diff = gendiff(obj1, obj2);
-    
     console.log(diff);
-    });
+  });
 
 program.parse();
 
