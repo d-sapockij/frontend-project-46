@@ -1,7 +1,50 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+
+import parse from './parser.js';
+
 const program = new Command();
+
+const getUnique = (arr) => {
+  return arr
+    .filter((el, index) => index === arr.indexOf(el))
+    .sort();
+  };
+
+const gendiff = (obj1, obj2) => {
+  const diffObj = { };
+  
+  const keys = getUnique([...Object.keys(obj1), ...Object.keys(obj2)]);
+
+
+  for (const key of keys) {
+    if (!Object.hasOwn(obj1, key)) {
+      // added;
+      diffObj[`+ ${key}`] = obj2[key];
+    } else if (!Object.hasOwn(obj2, key)) {
+      // deleted
+      diffObj[`- ${key}`] = obj1[key];
+    } else if (obj1[key] !== obj2[key]) {
+      // changed
+      diffObj[`- ${key}`] = obj1[key];
+      diffObj[`+ ${key}`] = obj2[key];
+    } else {
+      // unchanged
+      diffObj[`  ${key}`] = obj1[key];
+    }
+  }
+  const result = JSON
+    .stringify(diffObj, null, " ")
+    .replaceAll('"', '')
+
+  console.log(obj1, obj2)
+  return result;
+
+  
+}
 
 program
   .name('gendiff')
@@ -10,13 +53,18 @@ program
   .argument('<filepath2>')
   .version('0.8.0')
   .option('-f, --format [type]', 'output format')
-  .parse();
+  .action((filepath1, filepath2) => {
+    const data1 = readFileSync(path.resolve(filepath1));
+    const data2 = readFileSync(path.resolve(filepath2));
 
-// program.parse();
+    const obj1 = parse(data1);
+    const obj2 = parse(data2);
 
+    const diff = gendiff(obj1, obj2);
+    
+    console.log(diff);
+    });
 
-// program
-//   .option('--no-sauce', 'Remove sauce')
-//   .option('--cheese <flavour>', 'cheese flavour', 'mozzarella')
-//   .option('--no-cheese', 'plain with no cheese')
-//   .parse();
+program.parse();
+
+export default program;
