@@ -1,4 +1,4 @@
-// import gendiff from '../gendiff.js';
+import gendiff from '../gendiff.js';
 
 // const expected = `
 // {
