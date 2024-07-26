@@ -14,14 +14,17 @@ const yamlParse = (data) => yaml.load(data);
 const parse = (filepath) => {
   const extension = path.extname(filepath);
   const data = readFileSync(path.resolve(__dirname, '..', '__fixtures__', filepath));
+  let parsedData = { };
 
   if (extension === '.json') {
-    return jsonParse(data);
+    parsedData = jsonParse(data);
   }
 
   if (extension === '.yaml' || extension === '.yml') {
-    return yamlParse(data);
+    parsedData = yamlParse(data);
   }
+
+  return parsedData;
 };
 
 export default parse;
