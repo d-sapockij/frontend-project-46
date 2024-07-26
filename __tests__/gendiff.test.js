@@ -3,19 +3,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-import parse from '../src/parser.js';
-import gendiff from '../src/index.js';
+import parse from '../src/parsers.js';
+import compareObjects from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const filepath1 = path.resolve(__dirname, '..', '__fixtures__', 'file1.json');
-const filepath2 = path.resolve(__dirname, '..', '__fixtures__', 'file2.json');
-
-const data1 = readFileSync(filepath1);
-const data2 = readFileSync(filepath2);
-
-const obj1 = parse(data1);
-const obj2 = parse(data2);
 
 const expected = `{
  - follow: false,
@@ -26,6 +18,21 @@ const expected = `{
  + verbose: true
 }`;
 
-test('gendiff', () => {
-  expect(gendiff(obj1, obj2)).toEqual(expected);
+test('2 json files comparison', () => {
+  const filepath1 = path.resolve(__dirname, '..', '__fixtures__', 'file1.json');
+  const filepath2 = path.resolve(__dirname, '..', '__fixtures__', 'file2.json');
+  
+  const obj1 = parse(filepath1);
+  const obj2 = parse(filepath2);
+
+  expect(compareObjects(obj1, obj2)).toEqual(expected);
+});
+
+test('2 yml files comparison', () => {
+    const filepath1 = path.resolve(__dirname, '..', '__fixtures__', 'file1.yml');
+    const filepath2 = path.resolve(__dirname, '..', '__fixtures__', 'file2.yml');
+
+    const obj1 = parse(filepath1);
+    const obj2 = parse(filepath2);
+  expect(compareObjects(obj1, obj2)).toEqual(expected);
 });

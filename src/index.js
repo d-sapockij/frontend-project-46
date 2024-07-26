@@ -2,7 +2,7 @@ const getUnique = (arr) => arr
   .filter((el, index) => index === arr.indexOf(el))
   .sort();
 
-const gendiff = (obj1, obj2) => {
+const compareObjects = (obj1, obj2) => {
   const diffObj = { };
   const keys = getUnique([...Object.keys(obj1), ...Object.keys(obj2)]);
 
@@ -30,4 +30,4 @@ const gendiff = (obj1, obj2) => {
   return result;
 };
 
-export default gendiff;
+export default compareObjects;

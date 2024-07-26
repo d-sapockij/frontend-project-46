@@ -1,16 +1,9 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import path from 'node:path';
 
-import parse from '../src/parser.js';
-import gendiff from '../src/index.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import parse from '../src/parsers.js';
+import compareObjects from '../src/index.js';
 
 const program = new Command();
 
@@ -22,13 +15,10 @@ program
   .version('0.8.0')
   .option('-f, --format [type]', 'output format')
   .action((filepath1, filepath2) => {
-    const data1 = readFileSync(path.resolve(__dirname, '..', '__fixtures__', filepath1));
-    const data2 = readFileSync(path.resolve(__dirname, '..', '__fixtures__', filepath2));
+    const obj1 = parse(filepath1);
+    const obj2 = parse(filepath2);
 
-    const obj1 = parse(data1);
-    const obj2 = parse(data2);
-
-    const diff = gendiff(obj1, obj2);
+    const diff = compareObjects(obj1, obj2);
     console.log(diff);
   });
 
