@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'node:path';
 
-import parse from '../parser.js';
+import parse from '../src/parser.js';
 import gendiff from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,8 +22,8 @@ program
   .version('0.8.0')
   .option('-f, --format [type]', 'output format')
   .action((filepath1, filepath2) => {
-    const data1 = readFileSync(path.resolve(__dirname, filepath1));
-    const data2 = readFileSync(path.resolve(__dirname, filepath2));
+    const data1 = readFileSync(path.resolve(__dirname, '..', '__fixtures__', filepath1));
+    const data2 = readFileSync(path.resolve(__dirname, '..', '__fixtures__', filepath2));
 
     const obj1 = parse(data1);
     const obj2 = parse(data2);

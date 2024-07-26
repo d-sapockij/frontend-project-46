@@ -3,14 +3,13 @@ import path from 'node:path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-import parse from '../parser.js';
+import parse from '../src/parser.js';
 import gendiff from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const filepath1 = path.resolve(__dirname, '../file1.json');
-const filepath2 = path.resolve(__dirname, '../file2.json');
+const filepath1 = path.resolve(__dirname, '..', '__fixtures__', 'file1.json');
+const filepath2 = path.resolve(__dirname, '..', '__fixtures__', 'file2.json');
 
 const data1 = readFileSync(filepath1);
 const data2 = readFileSync(filepath2);
