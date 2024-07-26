@@ -12,15 +12,16 @@ const jsonParse = (data) => JSON.parse(data);
 const yamlParse = (data) => yaml.load(data);
 
 const parse = (filepath) => {
-    const extension = path.extname(filepath);
-    const data = readFileSync(path.resolve(__dirname, '..', '__fixtures__', filepath));
+  const extension = path.extname(filepath);
+  const data = readFileSync(path.resolve(__dirname, '..', '__fixtures__', filepath));
 
-    if (extension === '.json') {
-        return jsonParse(data);
-    };
-    if (extension ==='.yaml' || extension ==='.yml') {
-        return yamlParse(data);
-    };
+  if (extension === '.json') {
+    return jsonParse(data);
+  }
+
+  if (extension === '.yaml' || extension === '.yml') {
+    return yamlParse(data);
+  }
 };
 
 export default parse;

@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -21,7 +20,7 @@ const expected = `{
 test('2 json files comparison', () => {
   const filepath1 = path.resolve(__dirname, '..', '__fixtures__', 'file1.json');
   const filepath2 = path.resolve(__dirname, '..', '__fixtures__', 'file2.json');
-  
+
   const obj1 = parse(filepath1);
   const obj2 = parse(filepath2);
 
@@ -29,10 +28,10 @@ test('2 json files comparison', () => {
 });
 
 test('2 yml files comparison', () => {
-    const filepath1 = path.resolve(__dirname, '..', '__fixtures__', 'file1.yml');
-    const filepath2 = path.resolve(__dirname, '..', '__fixtures__', 'file2.yml');
+  const filepath1 = path.resolve(__dirname, '..', '__fixtures__', 'file1.yml');
+  const filepath2 = path.resolve(__dirname, '..', '__fixtures__', 'file2.yml');
 
-    const obj1 = parse(filepath1);
-    const obj2 = parse(filepath2);
+  const obj1 = parse(filepath1);
+  const obj2 = parse(filepath2);
   expect(compareObjects(obj1, obj2)).toEqual(expected);
 });
