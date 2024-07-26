@@ -2,14 +2,16 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/d-sapockij/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/d-sapockij/frontend-project-46/actions)",
-  "main": "parser.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest"
   },
   "author": "",
   "license": "ISC",
   "type": "module",
-  "bin": "gendiff.js",
+  "bin": { 
+    "gendiff": "bin/gendiff.js"
+  },
   "dependencies": {
     "commander": "^12.1.0"
   },
