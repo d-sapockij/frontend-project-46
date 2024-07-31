@@ -2,7 +2,6 @@
 
 import { Command } from 'commander';
 
-import parse from '../src/parsers.js';
 import compareObjects from '../src/index.js';
 
 const program = new Command();
@@ -13,12 +12,9 @@ program
   .argument('<filepath1>')
   .argument('<filepath2>')
   .version('0.8.0')
-  .option('-f, --format [type]', 'output format')
+  .option('-f, --format [type]', 'output format', 'stylish')
   .action((filepath1, filepath2) => {
-    const obj1 = parse(filepath1);
-    const obj2 = parse(filepath2);
-
-    const diff = compareObjects(obj1, obj2);
+    const diff = compareObjects(filepath1, filepath2);
     console.log(diff);
   });
 
