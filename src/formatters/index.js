@@ -1,5 +1,6 @@
 import stylish from './stylish.js';
 import plain from './plain.js';
+import json from './json.js';
 
 const formatter = (diffObj, format) => {
   if (format === 'stylish') {
@@ -8,8 +9,9 @@ const formatter = (diffObj, format) => {
   if (format === 'plain') {
     return plain(diffObj);
   }
-  const result = JSON.stringify(diffObj, null, ' ');
-  return result;
+  if (format === 'json') {
+    return json(diffObj);
+  }
 };
 
 export default formatter;
