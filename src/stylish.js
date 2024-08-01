@@ -1,64 +1,49 @@
-const stringify = (obj) => JSON.stringify(obj, null, ' ').replaceAll('"', '');
+import { isObject, stringify } from './helpers.js';
 
 const stylish = (obj, replacer = ' ', spacesCount = 1) => {
-    const iter = (currentValue, depth) => {
-      if (Object.hasOwn(currentValue, 'state')) {
-        if (currentValue.state === 'added') {
-            return `+ ${currentValue.name}: ${stringify(currentValue.value)}`;
+  const currentStringify = (value, currentDepth) => (
+    stringify(value, currentDepth, replacer, spacesCount)
+  );
+
+  const iter = (currentValue, depth) => {
+    const indentSize = depth * spacesCount;
+    const bracketIndent = replacer.repeat(indentSize - spacesCount);
+    const lines = Object
+      .values(currentValue)
+      .flatMap((val) => {
+        const currentIndent = replacer.repeat(indentSize);
+        const currentIndentForSymbols = replacer.repeat(indentSize - 2);
+        if (!isObject(val)) {
+          return `${val.value}`;
         }
-        if (currentValue.state === 'deleted') {
-            return `- ${currentValue.name}: ${stringify(currentValue.value)}`;
+
+        if (val.state === 'added') {
+          return `${currentIndentForSymbols}+ ${val.name}: ${currentStringify(val.value, depth + 1)}`;
         }
-        if (currentValue.state === 'changed') {
-            return (
-            `- ${currentValue.name}: ${stringify(currentValue.beforeValue)} 
-             + ${currentValue.name}: ${stringify(currentValue.afterValue)}`
-          );
+        if (val.state === 'deleted') {
+          return `${currentIndentForSymbols}- ${val.name}: ${currentStringify(val.value, depth + 1)}`;
         }
-        if (currentValue.state === 'unchanged') {
-            return `  ${currentValue.name}: ${stringify(currentValue.value)}`;
+        if (val.state === 'unchanged') {
+          return `${currentIndentForSymbols}  ${val.name}: ${currentStringify(val.value, depth + 1)}`;
         }
-    }
-      if (typeof currentValue !== 'object' || currentValue === null) {
-        return `${currentValue}`;
-      }
-  
-      const indentSize = depth * spacesCount;
-      const currentIndent = replacer.repeat(indentSize - 2);
-      const bracketIndent = replacer.repeat(indentSize - spacesCount);
+        if (val.state === 'changed') {
+          return [
+            `${currentIndentForSymbols}- ${val.name}: ${currentStringify(val.value.beforeValue, depth + 1)}`,
+            `${currentIndentForSymbols}+ ${val.name}: ${currentStringify(val.value.afterValue, depth + 1)}`,
+          ];
+        }
 
-      const lines = Object
-        .entries(currentValue)
-        .map(([key, val]) => `${currentIndent}${key}: ${iter(val, depth + 1)}`);
+        return `${currentIndent}${val.name}: ${iter(val.children, depth + 1)}`;
+      });
 
-      return [
-        '{',
-        ...lines,
-        `${bracketIndent}}`,
-      ].join('\n');
-
-    // if (Object.hasOwn(currentValue, 'name') && Object.hasOwn(currentValue, 'state')) {
-    //   return currentValue;
-    // }
-
-    // const indentSize = depth * spacesCount;
-    // const currentIndent = replacer.repeat(indentSize);
-    // const bracketIndent = replacer.repeat(indentSize - spacesCount);
-    // const lines = Object
-    //   .entries(currentValue)
-    //   .map(([key, val]) => `${currentIndent}${key}: ${iter(val, depth + 1)}`);
-
-    // const keys = Object.keys(currentValue);
-    // keys.forEach((key) => {
-      // if (currentValue.state === 'added') {
-      //   `+ ${currentValue.name}: ${stringify(currentValue.value)}`;
-      // }
-    // })
-
-    };
-
-  
-    return iter(obj, 1);
+    return [
+      '{',
+      ...lines,
+      `${bracketIndent}}`,
+    ].join('\n');
   };
 
-  export default stylish;
+  return iter(obj, 1);
+};
+
+export default stylish;
