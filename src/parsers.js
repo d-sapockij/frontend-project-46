@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import { readFile, getExtension } from './readFileUtils.js';
+import { readFile, getExtension } from './utils/readFileUtils.js';
 
 const jsonParse = (data) => JSON.parse(data);
 const yamlParse = (data) => yaml.load(data);

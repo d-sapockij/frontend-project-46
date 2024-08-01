@@ -2,7 +2,8 @@ const getUniqueItems = (arr) => arr
   .filter((el, index) => index === arr.indexOf(el))
   .sort();
 
-const isObject = (data) => typeof data === 'object' && data !== null;
+const isObject = (data) => data instanceof Object;
+const isArray = (data) => Array.isArray(data);
 
 const stringify = (value, depth = 1, replacer = ' ', spacesCount = 1) => {
   const iter = (currentValue, currentDepth) => {
@@ -28,4 +29,9 @@ const stringify = (value, depth = 1, replacer = ' ', spacesCount = 1) => {
   return iter(value, depth);
 };
 
-export { getUniqueItems, isObject, stringify };
+export {
+  getUniqueItems,
+  isObject,
+  isArray,
+  stringify,
+};
