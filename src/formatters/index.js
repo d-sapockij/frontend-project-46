@@ -12,6 +12,7 @@ const formatter = (diffObj, format) => {
   if (format === 'json') {
     return json(diffObj);
   }
+  return 'Unexpected format';
 };
 
 export default formatter;
