@@ -19,21 +19,19 @@ const plain = (obj) => {
       const newName = [name, currentName]
         .filter((line) => line !== '')
         .join('.');
-      // let line = '';
-
-      if (val.state === 'added') {
-        return ` '${newName}' was added with value: ${valueToString(val.value)}`;
-      }
-      if (val.state === 'deleted') {
-        return ` '${newName}' was removed`;
-      }
-      if (val.state === 'changed') {
-        return ` '${newName}' was updated. From ${valueToString(val.value.beforeValue)} to ${valueToString(val.value.afterValue)}`;
-      }
-      if (val.state === 'nested') {
-        return iter(val.children, newName);
-      }
-      return '';
+      const { value, state, children = null } = val;
+      switch (state) {
+        case 'added':
+          return `Property '${newName}' was added with value: ${valueToString(value)}`;
+        case 'deleted':
+          return `Property '${newName}' was removed`;
+        case 'changed':
+          return `Property '${newName}' was updated. From ${valueToString(value.beforeValue)} to ${valueToString(value.afterValue)}`;
+        case 'nested':
+          return iter(children, newName);
+        default:
+          return '';
+      };
     })
     .filter((line) => line !== '')
     .join('\n');
