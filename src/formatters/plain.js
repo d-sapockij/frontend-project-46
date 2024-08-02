@@ -15,11 +15,16 @@ const plain = (obj) => {
   const iter = (currentValue, name) => Object
     .values(currentValue)
     .map((val) => {
-      const currentName = val.name;
+      const {
+        name: currentName,
+        value,
+        state,
+        children = null,
+      } = val;
       const newName = [name, currentName]
         .filter((line) => line !== '')
         .join('.');
-      const { value, state, children = null } = val;
+
       switch (state) {
         case 'added':
           return `Property '${newName}' was added with value: ${valueToString(value)}`;
@@ -30,10 +35,10 @@ const plain = (obj) => {
         case 'nested':
           return iter(children, newName);
         default:
-          return '';
-      };
+          return null;
+      }
     })
-    .filter((line) => line !== '')
+    .filter((line) => line !== null)
     .join('\n');
 
   return iter(obj, '');

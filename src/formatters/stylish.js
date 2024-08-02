@@ -17,30 +17,30 @@ const stylish = (obj) => {
       .flatMap((val) => {
         const currentIndent = replacer.repeat(indentSize);
         const currentIndentForSign = replacer.repeat(indentSize - signIndent);
-        // const { name, value } = val;
-        // Типа чтобы поменять все вот эти val.name, попробовать деструктуризировать
+        const {
+          name,
+          value,
+          state,
+          children = null,
+        } = val;
 
-        // const sign = '';
-        // Короче подумать как можно улучшить ситуацию с дублированием кода
-        // ввести переменную sign или типа того
-
-        if (val.state === 'added') {
-          return `${currentIndentForSign}+ ${val.name}: ${stylishStringify(val.value, depth + 1)}`;
+        switch (state) {
+          case 'added':
+            return `${currentIndentForSign}+ ${name}: ${stylishStringify(value, depth + 1)}`;
+          case 'deleted':
+            return `${currentIndentForSign}- ${name}: ${stylishStringify(value, depth + 1)}`;
+          case 'unchanged':
+            return `${currentIndentForSign}  ${name}: ${stylishStringify(value, depth + 1)}`;
+          case 'changed':
+            return [
+              `${currentIndentForSign}- ${name}: ${stylishStringify(value.beforeValue, depth + 1)}`,
+              `${currentIndentForSign}+ ${name}: ${stylishStringify(value.afterValue, depth + 1)}`,
+            ];
+          case 'nested':
+            return `${currentIndent}${name}: ${iter(children, depth + 1)}`;
+          default:
+            return null;
         }
-        if (val.state === 'deleted') {
-          return `${currentIndentForSign}- ${val.name}: ${stylishStringify(val.value, depth + 1)}`;
-        }
-        if (val.state === 'unchanged') {
-          return `${currentIndentForSign}  ${val.name}: ${stylishStringify(val.value, depth + 1)}`;
-        }
-        if (val.state === 'changed') {
-          return [
-            `${currentIndentForSign}- ${val.name}: ${stylishStringify(val.value.beforeValue, depth + 1)}`,
-            `${currentIndentForSign}+ ${val.name}: ${stylishStringify(val.value.afterValue, depth + 1)}`,
-          ];
-        }
-
-        return `${currentIndent}${val.name}: ${iter(val.children, depth + 1)}`;
       });
 
     return [

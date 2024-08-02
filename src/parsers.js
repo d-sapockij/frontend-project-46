@@ -8,16 +8,15 @@ const parse = (filepath) => {
   const extension = getExtension(filepath);
   const data = readFile(filepath);
 
-  let parsedData = { };
-
-  if (extension === '.json') {
-    parsedData = jsonParse(data);
+  switch (extension) {
+    case '.json':
+      return jsonParse(data);
+    case '.yaml':
+    case '.yml':
+      return yamlParse(data);
+    default:
+      return null;
   }
-  if (extension === '.yaml' || extension === '.yml') {
-    parsedData = yamlParse(data);
-  }
-
-  return parsedData;
 };
 
 export default parse;
