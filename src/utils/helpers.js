@@ -1,4 +1,4 @@
-const getUniqueItems = (arr) => [...arr]
+const getUniqueItems = (arr) => arr
   .filter((el, index) => index === arr.indexOf(el))
   .toSorted();
 
