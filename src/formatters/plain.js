@@ -12,8 +12,7 @@ const valueToString = (value) => {
 };
 
 const plain = (obj) => {
-  const iter = (currentValue, name) => Object
-    .values(currentValue)
+  const iter = (currentValue, name) => currentValue
     .map((val) => {
       const {
         name: currentName,

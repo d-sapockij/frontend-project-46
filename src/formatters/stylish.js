@@ -12,8 +12,7 @@ const stylish = (obj) => {
     const indentSize = depth * spacesCount;
     const bracketIndent = ' '.repeat(indentSize - spacesCount);
     const signIndent = 2;
-    const lines = Object
-      .values(currentValue)
+    const lines = currentValue
       .flatMap((val) => {
         const currentIndent = replacer.repeat(indentSize);
         const currentIndentForSign = replacer.repeat(indentSize - signIndent);

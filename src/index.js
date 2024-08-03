@@ -7,6 +7,7 @@ const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const data2 = parse(filepath2);
 
   const result = compareObjects(data1, data2);
+  // console.log(result)
   return formatter(result, format);
 };
 
