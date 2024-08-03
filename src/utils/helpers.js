@@ -1,6 +1,6 @@
 const getUniqueItems = (arr) => [...arr]
   .filter((el, index) => index === arr.indexOf(el))
-  .sort();
+  .toSorted();
 
 const isObject = (data) => data instanceof Object;
 const isArray = (data) => Array.isArray(data);
