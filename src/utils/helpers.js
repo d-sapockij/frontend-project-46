@@ -1,6 +1,6 @@
-const getUniqueItems = (arr) => arr
-  .filter((el, index) => index === arr.indexOf(el))
-  .toSorted();
+import _ from 'lodash';
+
+const getUniqueItems = (arr) => _.sortBy(_.uniq(arr));
 
 const isObject = (data) => data instanceof Object;
 const isArray = (data) => Array.isArray(data);

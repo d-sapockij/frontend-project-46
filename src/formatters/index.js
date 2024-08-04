@@ -12,7 +12,7 @@ const formatter = (diffObj, format) => {
   if (format === 'json') {
     return json(diffObj);
   }
-  return 'Unexpected format';
+  throw new Error(`Unknown format: '${format}'! Use stylish, plain, or json`);
 };
 
 export default formatter;

@@ -15,7 +15,7 @@ const parse = (filepath) => {
     case '.yml':
       return yamlParse(data);
     default:
-      return null;
+      throw new Error(`Unknown file extension: '${extension}'! Only .json, .yml or .yaml are supported.`);
   }
 };
 
