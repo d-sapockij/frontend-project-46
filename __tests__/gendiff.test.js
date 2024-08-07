@@ -1,10 +1,19 @@
+import path from 'node:path';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
 import genDiff from '../src/index.js';
 
-import { getFixturePath, readFile } from '../src/utils/readFileUtils.js';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const expectedStylish = readFile('stylish.txt').toString();
-const expectedPlain = readFile('plain.txt').toString();
-const expectedJson = readFile('json.txt').toString();
+const getFixturePath = (filename) => path.resolve(__dirname, '..', '__fixtures__', filename);
+const readFixtureFile = (filename) => readFileSync(getFixturePath(filename));
+
+const expectedStylish = readFixtureFile('stylish.txt').toString();
+const expectedPlain = readFixtureFile('plain.txt').toString();
+const expectedJson = readFixtureFile('json.txt').toString();
 
 const jsonFilePath1 = getFixturePath('file1.json');
 const jsonFilePath2 = getFixturePath('file2.json');

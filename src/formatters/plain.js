@@ -1,7 +1,7 @@
-import { isObject, isArray } from '../utils/helpers.js';
+import _ from 'lodash';
 
 const valueToString = (value) => {
-  if (isObject(value) || isArray(value)) {
+  if (_.isObject(value) || Array.isArray(value)) {
     return '[complex value]';
   }
   if (typeof value === 'string') {
@@ -17,14 +17,14 @@ const plain = (obj) => {
       const {
         name: currentName,
         value,
-        state,
+        type,
         children = null,
       } = val;
       const newName = [name, currentName]
         .filter((line) => line !== '')
         .join('.');
 
-      switch (state) {
+      switch (type) {
         case 'added':
           return `Property '${newName}' was added with value: ${valueToString(value)}`;
         case 'deleted':

@@ -1,4 +1,28 @@
-import { stringify } from '../utils/helpers.js';
+import _ from 'lodash';
+
+const stringify = (value, depth = 1, replacer = ' ', spacesCount = 1) => {
+  const iter = (currentValue, currentDepth) => {
+    if (!_.isObject(currentValue)) {
+      return `${currentValue}`;
+    }
+
+    const indentSize = currentDepth * spacesCount;
+    const currentIndent = replacer.repeat(indentSize);
+    const bracketIndent = replacer.repeat(indentSize - spacesCount);
+
+    const lines = Object
+      .entries(currentValue)
+      .map(([key, val]) => `${currentIndent}${key}: ${iter(val, currentDepth + 1)}`);
+
+    return [
+      '{',
+      ...lines,
+      `${bracketIndent}}`,
+    ].join('\n');
+  };
+
+  return iter(value, depth);
+};
 
 const stylish = (obj) => {
   const replacer = ' ';
@@ -19,11 +43,11 @@ const stylish = (obj) => {
         const {
           name,
           value,
-          state,
+          type,
           children = null,
         } = val;
 
-        switch (state) {
+        switch (type) {
           case 'added':
             return `${currentIndentForSign}+ ${name}: ${stylishStringify(value, depth + 1)}`;
           case 'deleted':
